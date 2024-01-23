@@ -1,10 +1,10 @@
 version: '3.8'
 services:
-  devcontainer: #codespace
-    image: mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye
-    volumes:
-      - ../..:/workspaces:cached
-    command: sleep infinity
+  # devcontainer: #codespace
+  #   image: mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye
+  #   volumes:
+  #     - ../..:/workspaces:cached
+  #   command: sleep infinity
 
   redis: #database
     image: redis/redis-stack-server:latest
@@ -12,11 +12,12 @@ services:
     volumes:
       - redis-data:/data
     ports:
-      - "6379:6379"      
-  redis-insight: #database query tool
-    image: redislabs/redisinsight
-    restart: unless-stopped
-    ports:
-      - "8080:8001"    
+      - "6379:6379"    
+        
+  # redis-insight: #database query tool
+  #   image: redislabs/redisinsight
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8080:8001"    
 volumes:
   redis-data:
