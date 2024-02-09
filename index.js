@@ -51,12 +51,12 @@ app.post('/boxes', async (req,res) => {
     res.json(newBox);
 });
 
-app.post('/customer', async (req,res) => {
+app.post('/customers', async (req,res) => {
     const newCustomer = req.body;
     let responseStatus = (newCustomer.name) ? 200 : 400;
     if (responseStatus === 200) {
-        newCustomer.id = parseInt(await redisClient.json.arrLen('customer', '$')) + 1;
-        await redisClient.json.arrAppend('customer', '$', newCustomer);
+        newCustomer.id = parseInt(await redisClient.json.arrLen('customers', '$')) + 1;
+        await redisClient.json.arrAppend('customers', '$', newCustomer);
     } else {
         res.status(responseStatus);
         res.send("Error: cannot create customer due to missing feilds");
@@ -64,5 +64,10 @@ app.post('/customer', async (req,res) => {
     //res.status(responseStatus).send();
     res.json(newCustomer);
 });
+
+app.get('/customers', async (req,res) => {
+    let customers = await redisClient.json.get('customers', {path:'$'}); //gets boxes; without 'await' it returns a Promise to the frontend (that's bad)
+    res.json(customers[0]); //convert boxes to a string and send to browser
+}); //return boxes to user
 
 console.log("Hello World");
