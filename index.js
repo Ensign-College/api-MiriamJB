@@ -53,21 +53,28 @@ app.post('/boxes', async (req,res) => {
 
 app.post('/customers', async (req,res) => {
     const newCustomer = req.body;
-    let responseStatus = (newCustomer.name) ? 200 : 400;
+    let responseStatus = (newCustomer.firstName && newCustomer.lastName && newCustomer.phoneNumber) ? 200 : 400;
     if (responseStatus === 200) {
-        newCustomer.id = parseInt(await redisClient.json.arrLen('customers', '$')) + 1;
-        await redisClient.json.arrAppend('customers', '$', newCustomer);
+        if (!Number.isInteger(newCustomer.phoneNumber)) {
+            res.status(500);
+            res.send("Error: please enter a valid phone number");
+        } else if ( await redisClient.exists(`customer:${newCustomer.phoneNumber}`) === 1 ) {
+            res.status(409);
+            res.send("Error: that phone number is already in use");
+        } else {
+            await redisClient.json.set(`customer:${newCustomer.phoneNumber}`, '$', newCustomer);
+            res.json(newCustomer);
+        }
     } else {
         res.status(responseStatus);
         res.send("Error: cannot create customer due to missing feilds");
     }
-    //res.status(responseStatus).send();
-    res.json(newCustomer);
 });
 
-app.get('/customers', async (req,res) => {
-    let customers = await redisClient.json.get('customers', {path:'$'}); //gets boxes; without 'await' it returns a Promise to the frontend (that's bad)
-    res.json(customers[0]); //convert boxes to a string and send to browser
+// TODO: this method doesn't work
+app.get('/customer:$id', async (req,res) => {
+    let customer = await redisClient.json.get(`customer:${id}`, {path:'$'}); //gets boxes; without 'await' it returns a Promise to the frontend (that's bad)
+    res.json(customer); //convert boxes to a string and send to browser
 }); //return boxes to user
 
 console.log("Hello World");
