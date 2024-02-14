@@ -53,15 +53,15 @@ app.post('/boxes', async (req,res) => {
 
 app.post('/customers', async (req,res) => {
     const newCustomer = req.body;
-    let responseStatus = (newCustomer.firstName && newCustomer.lastName && newCustomer.phoneNumber) ? 200 : 400;
-    if (responseStatus === 200) {
+    if (newCustomer.firstName && newCustomer.lastName && newCustomer.phoneNumber) {
         if (!Number.isInteger(newCustomer.phoneNumber)) {
             res.status(500);
             res.send("Error: please enter a valid phone number");
         } else if ( await redisClient.exists(`customer:${newCustomer.phoneNumber}`) === 1 ) {
             res.status(409);
-            res.send("Error: that phone number is already in use");
+            res.send(`Error: phone number ${newCustomer.phoneNumber} is already in use`);
         } else {
+            res.status(200);
             await redisClient.json.set(`customer:${newCustomer.phoneNumber}`, '$', newCustomer);
             res.json(newCustomer);
         }
@@ -71,10 +71,14 @@ app.post('/customers', async (req,res) => {
     }
 });
 
-// TODO: this method doesn't work
-app.get('/customer:$id', async (req,res) => {
-    let customer = await redisClient.json.get(`customer:${id}`, {path:'$'}); //gets boxes; without 'await' it returns a Promise to the frontend (that's bad)
-    res.json(customer); //convert boxes to a string and send to browser
+app.get('/customer:id', async (req,res) => {
+    let id = req.params.id; //includes the ":" with the id
+    let customer = await redisClient.json.get(`customer${id}`, {path:'$'});
+    if (customer) {
+        res.json(customer);
+    } else {
+        res.send(`Error: customer${id} does not exist`);
+    }
 }); //return boxes to user
 
 console.log("Hello World");
