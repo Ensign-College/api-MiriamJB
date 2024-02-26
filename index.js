@@ -6,12 +6,18 @@
 */
 
 //require = import (import needs more steps to work)
-//express is a framework for node.js
-//it makes APIs - connects frontend to database backend
-const express = require('express');
+const express = require('express'); //express is a framework for node.js. It makes APIs - connects frontend to database backend
 const Redis = require('redis');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
+//order stuff
+const { addOrder, getOrder } = require ("./services/orderservice.js");
+const { addOrderItem, getOrderItem } = require("./services/orderItems");
+const fs = require("fs");
+const Schema = json.parse(fs.readFileSync(".orderItemSchema.json", "utf8")); //read the orderItemSchema.json file
+const Ajv = require("ajv");
+const ajv = new Ajv(); //create an ajv object to validate JSON
 
 const options = {
     origin: 'http://localhost:3000' //allow frontend to call this URL for the backend
@@ -39,6 +45,7 @@ app.listen(port, ()=>{
     res = response to the bowser    
 */
 
+/* BOXES */
 app.get('/boxes', async (req,res) => {
     let boxes = await redisClient.json.get('boxes', {path:'$'}); //gets boxes; without 'await' it returns a Promise to the frontend (that's bad)
     res.json(boxes[0]); //convert boxes to a string and send to browser
@@ -51,6 +58,8 @@ app.post('/boxes', async (req,res) => {
     res.json(newBox);
 });
 
+/* CUSTOMERS */
+//post a customer
 app.post('/customers', async (req,res) => {
     const newCustomer = req.body;
     if (newCustomer.firstName && newCustomer.lastName && newCustomer.phoneNumber) {
@@ -71,6 +80,7 @@ app.post('/customers', async (req,res) => {
     }
 });
 
+//get a customer by id
 app.get('/customer:id', async (req,res) => {
     let id = req.params.id; //includes the ":" with the id
     let customer = await redisClient.json.get(`customer${id}`, {path:'$'});
@@ -79,6 +89,84 @@ app.get('/customer:id', async (req,res) => {
     } else {
         res.send(`Error: customer${id} does not exist`);
     }
-}); //return boxes to user
+});
+
+/* ORDER */
+//post order
+app.post("/order", async (req, res) => {
+    let order = req.body;
+    //order details, include product quantiy and shipping address
+    let responseStatus = order.productQuantity
+        ? 200
+        : 400 && order.ShippingAddress
+        ? 200
+        : 400;
+    
+        if (responseStatus === 200) {
+            try {
+                //addOrder function to handle order creation in the database
+                await addOrder({ redisClient, order});
+            } catch (error) {
+                console.error(error);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+        } else {
+            res.status(responseStatus);
+            res.send(`Missing one of the following fields: `); //INCOMPLETE
+        }
+        res.status(responseStatus).send();
+});
+
+//get order
+app.get("/orders/:orderId", async(req, res) => {
+    //get the order from the database
+    const orderId = req.params.orderId;
+    let order = await getOrder({ redisClient, orderId });
+    if (order === null) {
+        res.status(404).send("Order not found");
+    } else {
+        res.json(order);
+    }
+});
+
+/* ORDER ITEM */
+//post order items
+app.post("/orderItems", async (req, res) => {
+    try {
+        console.log("Schema: ", Schema);
+        const validate = ajv.compile(Schema);
+        const valid = validate(req.body);
+        if (!valid) {
+            return res.status(400).json({ error: "Invalid request body" });
+        }
+        console.log("Request Body:", req.body);
+        
+        //calling addOrderItem function and string the result
+        const orderItemId = await addOrderItem({
+            redisClient,
+            orderItem: req.body,
+        });
+
+        //responding with the result
+        res.status(201).json({ orderItemId, message: "Order item added successfully"});
+
+    } catch (error) {
+        console.error("Error adding order item: ", error);
+        res.status(500).json({error: "Internal server error"});
+    }
+});
+
+// get an order item by ID
+app.get("/orderItems/:orderItemId", async (req, res) => {
+    try{
+        const orderItemId = req.params.orderItemId;
+        const orderItem = await getOrderItem({ redisClient, orderItemId });
+        res.json(orderItem);
+    } catch (error) {
+        console.error("Error getting order item: ", error);
+        res.status(500).json({ error: "Internal server error"});
+    }
+})
 
 console.log("Hello World");
