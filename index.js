@@ -15,7 +15,7 @@ const cors = require('cors');
 const { addOrder, getOrder } = require ("./services/orderservice.js");
 const { addOrderItem, getOrderItem } = require("./services/orderItems");
 const fs = require("fs");
-const Schema = json.parse(fs.readFileSync(".orderItemSchema.json", "utf8")); //read the orderItemSchema.json file
+const Schema = JSON.parse(fs.readFileSync("./services/orderItemSchema.json", "utf8")); //read the orderItemSchema.json file
 const Ajv = require("ajv");
 const ajv = new Ajv(); //create an ajv object to validate JSON
 
@@ -104,8 +104,8 @@ app.post("/order", async (req, res) => {
     
         if (responseStatus === 200) {
             try {
-                //addOrder function to handle order creation in the database
-                await addOrder({ redisClient, order});
+                await addOrder({ redisClient, order}); //addOrder function to handle order creation in the database
+                res.send(order);
             } catch (error) {
                 console.error(error);
                 res.status(500).send("Internal Server Error");
@@ -113,13 +113,13 @@ app.post("/order", async (req, res) => {
             }
         } else {
             res.status(responseStatus);
-            res.send(`Missing one of the following fields: `); //INCOMPLETE
+            res.send(`Error: missing one of the following fields: customerId, productQuantity, ShippingAddress`); //INCOMPLETE
         }
         res.status(responseStatus).send();
 });
 
 //get order
-app.get("/orders/:orderId", async(req, res) => {
+app.get("/order/:orderId", async(req, res) => {
     //get the order from the database
     const orderId = req.params.orderId;
     let order = await getOrder({ redisClient, orderId });
@@ -128,6 +128,7 @@ app.get("/orders/:orderId", async(req, res) => {
     } else {
         res.json(order);
     }
+    console.log(orderId);
 });
 
 /* ORDER ITEM */
@@ -143,10 +144,7 @@ app.post("/orderItems", async (req, res) => {
         console.log("Request Body:", req.body);
         
         //calling addOrderItem function and string the result
-        const orderItemId = await addOrderItem({
-            redisClient,
-            orderItem: req.body,
-        });
+        const orderItemId = await addOrderItem({ redisClient, orderItem: req.body });
 
         //responding with the result
         res.status(201).json({ orderItemId, message: "Order item added successfully"});
