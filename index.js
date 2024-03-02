@@ -11,6 +11,9 @@ const Redis = require('redis');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+//customer stuff
+const { checkValidCustomer } = require("./services/customerService.js");
+
 //order stuff
 const { addOrder, getOrder } = require ("./services/orderservice.js");
 const { addOrderItem, getOrderItem } = require("./services/orderItems");
@@ -38,12 +41,14 @@ app.listen(port, ()=>{
     console.log(`API is listening on port ${port}`);
 }); //listens for web requests from frontend on port 3000 (and doesn't stop)
 
+
 /* Using an API:
     1. URL
     2. function to return boxes
     req = resquest from the browser
     res = response to the bowser    
 */
+
 
 /* BOXES */
 app.get('/boxes', async (req,res) => {
@@ -58,26 +63,13 @@ app.post('/boxes', async (req,res) => {
     res.json(newBox);
 });
 
+
 /* CUSTOMERS */
 //post a customer
 app.post('/customers', async (req,res) => {
-    const newCustomer = req.body;
-    if (newCustomer.firstName && newCustomer.lastName && newCustomer.phoneNumber) {
-        if (!Number.isInteger(newCustomer.phoneNumber)) {
-            res.status(500);
-            res.send("Error: please enter a valid phone number");
-        } else if ( await redisClient.exists(`customer:${newCustomer.phoneNumber}`) === 1 ) {
-            res.status(409);
-            res.send(`Error: phone number ${newCustomer.phoneNumber} is already in use`);
-        } else {
-            res.status(200);
-            await redisClient.json.set(`customer:${newCustomer.phoneNumber}`, '$', newCustomer);
-            res.json(newCustomer);
-        }
-    } else {
-        res.status(responseStatus);
-        res.send("Error: cannot create customer due to missing feilds");
-    }
+    let newCustomer = req.body;
+    response = await checkValidCustomer({redisClient, newCustomer});
+    res.status(response.status).send(response.body);
 });
 
 //get a customer by id
@@ -91,16 +83,15 @@ app.get('/customer:id', async (req,res) => {
     }
 });
 
+
 /* ORDER */
 //post order
 app.post("/order", async (req, res) => {
     let order = req.body;
+
     //order details, include product quantiy and shipping address
-    let responseStatus = order.productQuantity
-        ? 200
-        : 400 && order.ShippingAddress
-        ? 200
-        : 400;
+    let responseStatus = order.productQuantity ? 200 : 400
+        && order.shippingAddress ? 200 : 400;
     
         if (responseStatus === 200) {
             try {
@@ -113,7 +104,7 @@ app.post("/order", async (req, res) => {
             }
         } else {
             res.status(responseStatus);
-            res.send(`Error: missing one of the following fields: customerId, productQuantity, ShippingAddress`); //INCOMPLETE
+            res.send(`Error: missing one of the following fields: customerId, productQuantity, shippingAddress`);
         }
         res.status(responseStatus).send();
 });
@@ -131,11 +122,11 @@ app.get("/order/:orderId", async(req, res) => {
     console.log(orderId);
 });
 
+
 /* ORDER ITEM */
 //post order items
 app.post("/orderItems", async (req, res) => {
     try {
-        console.log("Schema: ", Schema);
         const validate = ajv.compile(Schema);
         const valid = validate(req.body);
         if (!valid) {
@@ -166,5 +157,3 @@ app.get("/orderItems/:orderItemId", async (req, res) => {
         res.status(500).json({ error: "Internal server error"});
     }
 })
-
-console.log("Hello World");
