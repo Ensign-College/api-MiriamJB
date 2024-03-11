@@ -119,7 +119,6 @@ app.get("/order/:orderId", async(req, res) => {
     } else {
         res.json(order);
     }
-    console.log(orderId);
 });
 
 
@@ -132,7 +131,6 @@ app.post("/orderItems", async (req, res) => {
         if (!valid) {
             return res.status(400).json({ error: "Invalid request body" });
         }
-        console.log("Request Body:", req.body);
         
         //calling addOrderItem function and string the result
         const orderItemId = await addOrderItem({ redisClient, orderItem: req.body });
