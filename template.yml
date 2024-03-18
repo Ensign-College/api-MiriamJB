@@ -79,4 +79,110 @@ Resources:
             Path: /boxes
             Method: post
 
-  # Define other Lambda functions similarly for other endpoints...
+  PostCustomerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.postCustomer
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        PostCustomerApi:
+          Type: Api
+          Properties:
+            Path: /customers
+            Method: post
+
+  GetCustomerByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getCustomerById
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        GetCustomerByIdApi:
+          Type: Api
+          Properties:
+            Path: /customer/{id}
+            Method: get
+
+  PostOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.postOrder
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        PostOrderApi:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: post
+
+  GetOrderByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getOrderById
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        GetOrderByIdApi:
+          Type: Api
+          Properties:
+            Path: /order/{orderId}
+            Method: get
+
+  PostOrderItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.postOrderItems
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        PostOrderItemsApi:
+          Type: Api
+          Properties:
+            Path: /orderItems
+            Method: post
+
+  GetOrderItemByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getOrderItemById
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        GetOrderItemByIdApi:
+          Type: Api
+          Properties:
+            Path: /orderItems/{orderItemId}
+            Method: get
