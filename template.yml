@@ -2,23 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 
 Resources:
-#  MyLambdaFunction:
-#    Type: 'AWS::Serverless::Function'
-#    Properties:
-#      Handler: index.handler
-#      Runtime: nodejs14.x
-#      CodeUri: ./lambda
-#      MemorySize: 128
-#      Timeout: 30
-#      Environment:
-#        Variables:
-#          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
-#      Events:
-#        MyApi:
-#          Type: Api
-#          Properties:
-#            Path: /myendpoint
-#            Method: get
 
   MyVPC:
     Type: AWS::EC2::VPC
@@ -60,4 +43,40 @@ Resources:
           ToPort: 6379
           CidrIp: 0.0.0.0/0
 
+  GetBoxesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getBoxes
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        GetBoxesApi:
+          Type: Api
+          Properties:
+            Path: /boxes
+            Method: get
 
+  PostBoxesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.postBoxes
+      Runtime: nodejs14.x
+      CodeUri: ./lambda
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+      Events:
+        PostBoxesApi:
+          Type: Api
+          Properties:
+            Path: /boxes
+            Method: post
+
+  # Define other Lambda functions similarly for other endpoints...
