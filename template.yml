@@ -48,7 +48,7 @@ Resources:
     Properties:
       Handler: index.getBoxes
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -66,7 +66,7 @@ Resources:
     Properties:
       Handler: index.postBoxes
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -84,7 +84,7 @@ Resources:
     Properties:
       Handler: index.postCustomer
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -102,7 +102,7 @@ Resources:
     Properties:
       Handler: index.getCustomerById
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -120,7 +120,7 @@ Resources:
     Properties:
       Handler: index.postOrder
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -138,7 +138,7 @@ Resources:
     Properties:
       Handler: index.getOrderById
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -156,7 +156,7 @@ Resources:
     Properties:
       Handler: index.postOrderItems
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -174,7 +174,7 @@ Resources:
     Properties:
       Handler: index.getOrderItemById
       Runtime: nodejs14.x
-      CodeUri: ./lambda
+      CodeUri: .
       MemorySize: 128
       Timeout: 30
       Environment:
