@@ -53,7 +53,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         GetBoxesApi:
           Type: Api
@@ -71,7 +71,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         PostBoxesApi:
           Type: Api
@@ -89,7 +89,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         PostCustomerApi:
           Type: Api
@@ -107,7 +107,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         GetCustomerByIdApi:
           Type: Api
@@ -125,7 +125,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         PostOrderApi:
           Type: Api
@@ -143,7 +143,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         GetOrderByIdApi:
           Type: Api
@@ -161,7 +161,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         PostOrderItemsApi:
           Type: Api
@@ -179,7 +179,7 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpointAddress
+          REDIS_HOST: !GetAtt MyElasticacheRedis.ConfigurationEndpoint.Address
       Events:
         GetOrderItemByIdApi:
           Type: Api
