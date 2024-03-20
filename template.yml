@@ -7,7 +7,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.getBoxes
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         GetBoxesApi:
@@ -20,7 +20,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.postBoxes
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         PostBoxesApi:
@@ -33,7 +33,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.postCustomer
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         PostCustomerApi:
@@ -46,7 +46,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.getCustomerById
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         GetCustomerByIdApi:
@@ -59,7 +59,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.postOrder
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         PostOrderApi:
@@ -72,7 +72,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.getOrderById
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         GetOrderByIdApi:
@@ -85,7 +85,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.postOrderItems
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         PostOrderItemsApi:
@@ -98,7 +98,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.getOrderItemById
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       CodeUri: .
       Events:
         GetOrderItemByIdApi:
