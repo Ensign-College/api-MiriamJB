@@ -3,109 +3,122 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Resources:
 
-  GetBoxesFunction:
+  # GetBoxesFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.getBoxes
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       GetBoxesApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /boxes
+  #           Method: get
+
+  BoxesFunction:
     Type: AWS::Serverless::Function
     Properties:
+      CodeUri: .
       Handler: index.getBoxes
       Runtime: nodejs20.x
-      CodeUri: .
       Events:
-        GetBoxesApi:
+        BoxesApiEvent:
           Type: Api
           Properties:
             Path: /boxes
             Method: get
 
-  PostBoxesFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.postBoxes
-      Runtime: nodejs20.x
-      CodeUri: .
-      Events:
-        PostBoxesApi:
-          Type: Api
-          Properties:
-            Path: /boxes
-            Method: post
+  # PostBoxesFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.postBoxes
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       PostBoxesApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /boxes
+  #           Method: post
 
-  PostCustomerFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.postCustomer
-      Runtime: nodejs20.x
-      CodeUri: .
-      Events:
-        PostCustomerApi:
-          Type: Api
-          Properties:
-            Path: /customers
-            Method: post
+  # PostCustomerFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.postCustomer
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       PostCustomerApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /customers
+  #           Method: post
 
-  GetCustomerByIdFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.getCustomerById
-      Runtime: nodejs20.x
-      CodeUri: .
-      Events:
-        GetCustomerByIdApi:
-          Type: Api
-          Properties:
-            Path: /customer/{id}
-            Method: get
+  # GetCustomerByIdFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.getCustomerById
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       GetCustomerByIdApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /customer/{id}
+  #           Method: get
 
-  PostOrderFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.postOrder
-      Runtime: nodejs20.x
-      CodeUri: .
-      Events:
-        PostOrderApi:
-          Type: Api
-          Properties:
-            Path: /order
-            Method: post
+  # PostOrderFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.postOrder
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       PostOrderApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /order
+  #           Method: post
 
-  GetOrderByIdFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.getOrderById
-      Runtime: nodejs20.x
-      CodeUri: .
-      Events:
-        GetOrderByIdApi:
-          Type: Api
-          Properties:
-            Path: /order/{orderId}
-            Method: get
+  # GetOrderByIdFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.getOrderById
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       GetOrderByIdApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /order/{orderId}
+  #           Method: get
 
-  PostOrderItemsFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.postOrderItems
-      Runtime: nodejs20.x
-      CodeUri: .
-      Events:
-        PostOrderItemsApi:
-          Type: Api
-          Properties:
-            Path: /orderItems
-            Method: post
+  # PostOrderItemsFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.postOrderItems
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       PostOrderItemsApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /orderItems
+  #           Method: post
 
-  GetOrderItemByIdFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.getOrderItemById
-      Runtime: nodejs20.x
-      CodeUri: .
-      Events:
-        GetOrderItemByIdApi:
-          Type: Api
-          Properties:
-            Path: /orderItems/{orderItemId}
-            Method: get
+  # GetOrderItemByIdFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.getOrderItemById
+  #     Runtime: nodejs20.x
+  #     CodeUri: .
+  #     Events:
+  #       GetOrderItemByIdApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /orderItems/{orderItemId}
+  #           Method: get
 
   MyVPC:
     Type: AWS::EC2::VPC
