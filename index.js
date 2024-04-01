@@ -73,8 +73,9 @@ exports.getCustomerById = async (event) => {
 exports.postOrder = async (event) => {
     let order = JSON.parse(event.body);
 
-    let responseStatus = order.productQuantity && order.shippingAddress ? 200 : 400;
-
+    let responseStatus = order.productQuantity ? 200 : 400
+        && order.shippingAddress ? 200 : 400;
+    
     if (responseStatus === 200) {
         try {
             await addOrder({ redisClient, order });
