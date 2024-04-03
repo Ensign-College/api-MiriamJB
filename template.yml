@@ -51,6 +51,9 @@ Resources:
       Handler: index.getBoxes
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         GetBoxesApi:
           Type: Api
@@ -64,6 +67,9 @@ Resources:
       Handler: index.postBoxes
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         PostBoxesApi:
           Type: Api
@@ -77,6 +83,9 @@ Resources:
       Handler: index.postCustomer
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         PostCustomerApi:
           Type: Api
@@ -90,6 +99,9 @@ Resources:
       Handler: index.getCustomerById
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         GetCustomerByIdApi:
           Type: Api
@@ -103,6 +115,9 @@ Resources:
       Handler: index.postOrder
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         PostOrderApi:
           Type: Api
@@ -116,6 +131,9 @@ Resources:
       Handler: index.getOrderById
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         GetOrderByIdApi:
           Type: Api
@@ -129,6 +147,9 @@ Resources:
       Handler: index.postOrderItems
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         PostOrderItemsApi:
           Type: Api
@@ -142,6 +163,9 @@ Resources:
       Handler: index.getOrderItemById
       Runtime: nodejs20.x
       CodeUri: .
+      Environment:
+        Variables:
+          REDIS_HOST: !GetAtt MyElasticacheRedis.RedisEndpoint.Address
       Events:
         GetOrderItemByIdApi:
           Type: Api
