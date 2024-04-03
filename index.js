@@ -21,7 +21,7 @@ const redisClient = Redis.createClient({
 
 /* BOXES */
 exports.getBoxes = async (event) => {
-    redisClient.connect();
+    await redisClient.connect();
     let boxes = await redisClient.json.get('boxes', {path:'$'});
     return {
         statusCode: 200,
@@ -30,7 +30,7 @@ exports.getBoxes = async (event) => {
 };
 
 exports.postBoxes = async (event) => {
-    redisClient.connect();
+    await redisClient.connect();
     const newBox = JSON.parse(event.body);
     newBox.id = parseInt(await redisClient.json.arrLen('boxes', '$')) + 1;
     await redisClient.json.arrAppend('boxes', '$', newBox);
@@ -44,7 +44,7 @@ exports.postBoxes = async (event) => {
 /* CUSTOMERS */
 //post a customer
 exports.postCustomer = async (event) => {
-    redisClient.connect();
+    await redisClient.connect();
     let newCustomer = JSON.parse(event.body);
     let response = await checkValidCustomer({ redisClient, newCustomer });
     return {
@@ -55,7 +55,7 @@ exports.postCustomer = async (event) => {
 
 //get a customer by id
 exports.getCustomerById = async (event) => {
-    redisClient.connect();
+    await redisClient.connect();
     let id = event.pathParameters.id;
     let customer = await redisClient.json.get(`customer${id}`, {path:'$'});
     if (customer) {
@@ -81,7 +81,7 @@ exports.postOrder = async (event) => {
         && order.shippingAddress ? 200 : 400;
     
     if (responseStatus === 200) {
-        redisClient.connect();
+        await redisClient.connect();
         try {
             await addOrder({ redisClient, order });
             return {
@@ -106,7 +106,7 @@ exports.postOrder = async (event) => {
 
 //get order
 exports.getOrderById = async (event) => {
-    redisClient.connect();
+    await redisClient.connect();
     const orderId = event.pathParameters.orderId;
     let order = await getOrder({ redisClient, orderId });
     if (order === null) {
@@ -126,7 +126,7 @@ exports.getOrderById = async (event) => {
 /* ORDER ITEM */
 //post order items
 exports.postOrderItems = async (event) => {
-    redisClient.connect();
+    await redisClient.connect();
     try {
         const validate = ajv.compile(Schema);
         const valid = validate(JSON.parse(event.body));
@@ -154,7 +154,7 @@ exports.postOrderItems = async (event) => {
 
 // get an order item by ID
 exports.getOrderItemById = async (event) => {
-    redisClient.connect();
+    await redisClient.connect();
     try {
         const orderItemId = event.pathParameters.orderItemId;
         const orderItem = await getOrderItem({ redisClient, orderItemId });
