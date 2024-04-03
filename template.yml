@@ -43,10 +43,10 @@ Resources:
           ToPort: 6379
           CidrIp: 0.0.0.0/0
 
-  SeansLambdaRole:
+  mjbLambdaRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: SeansLambdaRole
+      RoleName: mjbLambdaRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -75,7 +75,7 @@ Resources:
           Properties:
             Path: /boxes
             Method: get
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
 
   PostBoxesFunction:
     Type: AWS::Serverless::Function
@@ -92,7 +92,7 @@ Resources:
           Properties:
             Path: /boxes
             Method: post
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
 
   PostCustomerFunction:
     Type: AWS::Serverless::Function
@@ -109,7 +109,7 @@ Resources:
           Properties:
             Path: /customers
             Method: post
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
 
   GetCustomerByIdFunction:
     Type: AWS::Serverless::Function
@@ -126,7 +126,7 @@ Resources:
           Properties:
             Path: /customer/{id}
             Method: get
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
 
   PostOrderFunction:
     Type: AWS::Serverless::Function
@@ -143,7 +143,7 @@ Resources:
           Properties:
             Path: /order
             Method: post
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
 
   GetOrderByIdFunction:
     Type: AWS::Serverless::Function
@@ -160,7 +160,7 @@ Resources:
           Properties:
             Path: /order/{orderId}
             Method: get
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
 
   PostOrderItemsFunction:
     Type: AWS::Serverless::Function
@@ -177,7 +177,7 @@ Resources:
           Properties:
             Path: /orderItems
             Method: post
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
 
   GetOrderItemByIdFunction:
     Type: AWS::Serverless::Function
@@ -194,4 +194,4 @@ Resources:
           Properties:
             Path: /orderItems/{orderItemId}
             Method: get
-      Role: !Ref SeansLambdaRole
+      Role: !Ref mjbLambdaRole
