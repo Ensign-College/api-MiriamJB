@@ -43,6 +43,21 @@ Resources:
           ToPort: 6379
           CidrIp: 0.0.0.0/0
 
+  MyLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: MyLambdaRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExectuionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAcessExecutionRole
+
 # Functions
 
   GetBoxesFunction:
@@ -60,6 +75,7 @@ Resources:
           Properties:
             Path: /boxes
             Method: get
+      Role: !Ref MyLambdaRole
 
   PostBoxesFunction:
     Type: AWS::Serverless::Function
@@ -76,6 +92,7 @@ Resources:
           Properties:
             Path: /boxes
             Method: post
+      Role: !Ref MyLambdaRole
 
   PostCustomerFunction:
     Type: AWS::Serverless::Function
@@ -92,6 +109,7 @@ Resources:
           Properties:
             Path: /customers
             Method: post
+      Role: !Ref MyLambdaRole
 
   GetCustomerByIdFunction:
     Type: AWS::Serverless::Function
@@ -108,6 +126,7 @@ Resources:
           Properties:
             Path: /customer/{id}
             Method: get
+      Role: !Ref MyLambdaRole
 
   PostOrderFunction:
     Type: AWS::Serverless::Function
@@ -124,6 +143,7 @@ Resources:
           Properties:
             Path: /order
             Method: post
+      Role: !Ref MyLambdaRole
 
   GetOrderByIdFunction:
     Type: AWS::Serverless::Function
@@ -140,6 +160,7 @@ Resources:
           Properties:
             Path: /order/{orderId}
             Method: get
+      Role: !Ref MyLambdaRole
 
   PostOrderItemsFunction:
     Type: AWS::Serverless::Function
@@ -156,6 +177,7 @@ Resources:
           Properties:
             Path: /orderItems
             Method: post
+      Role: !Ref MyLambdaRole
 
   GetOrderItemByIdFunction:
     Type: AWS::Serverless::Function
@@ -172,3 +194,4 @@ Resources:
           Properties:
             Path: /orderItems/{orderItemId}
             Method: get
+      Role: !Ref MyLambdaRole
